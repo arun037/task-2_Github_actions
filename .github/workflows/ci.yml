@@ -26,10 +26,13 @@ jobs:
           run: npm test
 
         - name: build Docker image
+          env:
+            IMAGE_NAME: arunagri03/mynodeapp
+            TAG: ${{ github.run_number }}-${{ github.sha }}
           run: |
-            docker build -t arunagri03/mynodeapp:${{ github.run_number }} .
+            docker build -t $IMAGE_NAME:$TAG .
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker push arunagri03/mynodeapp:${{ github.run_number }}
+            docker push $IMAGE_NAME:$TAG
     
     deploy:
         runs-on: ubuntu-latest
